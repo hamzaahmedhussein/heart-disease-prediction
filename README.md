@@ -86,7 +86,7 @@ Metrics automatically generated against an unseen 20% holdout test set using `ma
 This runs the entire lifecycle automatically. Docker will automatically pull the data, train the baseline model from scratch inside the container, and spin up both the backend API and frontend dashboard.
 
 ```bash
-git clone https://github.com/your-username/heart-disease-prediction.git
+git clone https://github.com/hamzaahmedhussein/heart-disease-prediction.git
 cd heart-disease-prediction
 
 docker-compose up --build

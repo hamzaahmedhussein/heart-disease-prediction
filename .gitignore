@@ -1,0 +1,42 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Jupyter
+.ipynb_checkpoints/
+jupyter_tuner/
+
+# Keras Tuner
+untitled_project/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Models (large binary files — regenerate via `make train`)
+# Uncomment if you don't want to track model weights:
+# models/*.keras
+# models/*.pkl
+
+# Logs
+logs/
+*.log
+
+# Data (raw data should be downloaded, not committed)
+# data/raw/*.csv

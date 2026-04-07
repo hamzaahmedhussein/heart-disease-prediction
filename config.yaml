@@ -1,0 +1,55 @@
+data:
+  raw_path: "data/raw/heart_disease.csv"
+  processed_path: "data/processed/cleaned_heart_disease.csv"
+  download_url: "https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data"
+  test_size: 0.2
+  random_state: 42
+  column_names:
+    - age
+    - sex
+    - cp
+    - trestbps
+    - chol
+    - fbs
+    - restecg
+    - thalach
+    - exang
+    - oldpeak
+    - slope
+    - ca
+    - thal
+    - target
+
+model:
+  architecture:
+    hidden_layers: [8]
+    dropout_rate: 0.5
+    activation: "swish"
+    output_activation: "sigmoid"
+    kernel_constraint_max_norm: 0.5
+    initializer: "he_normal"
+
+  training:
+    epochs: 100
+    batch_size: 128
+    early_stopping_patience: 15
+    validation_split: 0.2
+
+  optimizer:
+    name: "nadam"
+    initial_learning_rate: 0.001
+    lr_decay_steps: 100
+    lr_decay_rate: 0.95
+
+  inference:
+    mc_dropout_samples: 100
+    uncertainty_threshold: 0.15
+
+paths:
+  model_save: "models/homl_heart_model.keras"
+  scaler_save: "models/scaler.pkl"
+  results_dir: "results"
+
+api:
+  host: "0.0.0.0"
+  port: 8000

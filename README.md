@@ -18,38 +18,21 @@ Crucially, the model utilizes **Monte Carlo Dropout** at inference time. Instead
 ---
 
 ## System Architecture
+**1. Data Pipeline**
+* Raw UCI clinical CSV data is ingested.
+* Missing values are imputed before passing through a `StandardScaler` and a stratified train/test split.
 
-```mermaid
-graph LR
-    subgraph Data Pipeline
-        A[Raw UCI CSV] --> B[Data Loader & Imputation]
-        B --> C[StandardScaler & Stratified Split]
-    end
+**2. Deep Learning Model**
+* `Dense Bottleneck (8 Units)` ➔ `Batch Normalization` ➔ `Swish Activation` ➔ `MC Dropout (0.5)` ➔ `Max-Norm Constraint (0.5)` ➔ `Dense Sigmoid Output`.
 
-    subgraph Deep Learning Model
-        C --> D[Dense Bottleneck 8 Units]
-        D --> E[Batch Normalization]
-        E --> F[Swish Activation]
-        F --> G[MC Dropout 0.5]
-        G --> H[Max-Norm Constraint 0.5]
-        H --> J[Dense Sigmoid Output]
-    end
+**3. Bayesian Inference**
+* The model executes **100x Monte Carlo Forward Passes** per patient instead of a single prediction.
+* It evaluates both a base **Mean Risk Probability** and a **Standard Deviation Uncertainty**.
+* If uncertainty is `> 0.15`, the system explicitly **Flags the patient for Surgeon Review**. Otherwise, it outputs a Confident Clinical Prediction.
 
-    subgraph Bayesian Inference
-        J --> K[100x MC Forward Passes]
-        K --> L[Mean Risk Probability]
-        K --> M[Std Dev Uncertainty]
-        M --> N{std > 0.15?}
-        N --> |Yes| O[Flag for Surgeon Review]
-        N --> |No| P[Confident Clinical Prediction]
-    end
+**4. Deployment**
+* The finalized logic is served via a **FastAPI REST API**, visualized using an interactive **Streamlit Dashboard**, and orchestrated via **Docker Compose**.
 
-    subgraph Deployment
-        L --> Q[FastAPI REST API]
-        Q --> R[Streamlit Dashboard]
-        Q --> S[Docker Compose]
-    end
-```
 
 ---
 
